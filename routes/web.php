@@ -13,6 +13,15 @@ Route::get('/', function () {
 });
 
 
+Route::get('products/{model}/print', function (Product $model) {
+    return view('vendor.filament-ecommerce.products.print', compact('model'));
+})->name('product.print');
+
+Route::get('products/print-all', function () {
+    $products = Product::all();
+    return view('vendor.filament-ecommerce.products.print-all', compact('products'));
+})->name('products.print-all');
+
 Route::get('/pos/scan/{barcode}', function (Request $request, $barcode) {
     Log::info($barcode);
     $product = Product::where('barcode', $barcode)->first();
