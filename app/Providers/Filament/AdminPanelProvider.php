@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\ProductResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +17,10 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Resources\ProductResource;
+use Filament\Facades\Filament;
+
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -27,20 +30,31 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->plugin(\TomatoPHP\FilamentPWA\FilamentPWAPlugin::make())
             ->plugin(\TomatoPHP\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin::make())
+
+            ->resources([
+                ProductResource::class,
+            ])
             ->plugin(\TomatoPHP\FilamentPos\FilamentPOSPlugin::make())
+            ->plugin(
+                \TomatoPHP\FilamentEcommerce\FilamentEcommercePlugin::make()
+                    ->useCoupon()
+                    ->useGiftCard()
+                    ->useReferralCode()
+                    ->allowOrderExport()
+                    ->allowOrderImport()
+                    ->useWidgets()
+            )
+
             ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->databaseNotifications()
 
-            ->resources([
-                \App\Filament\Resources\ProductResource::class,
-            ])
-            // ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-
-            // ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])

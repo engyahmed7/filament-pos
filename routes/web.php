@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarcodeController;
+use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -8,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use TomatoPHP\FilamentEcommerce\Models\Cart;
 use TomatoPHP\FilamentEcommerce\Models\Product;
 
+
+// dd(Filament::getResources());
 Route::get('/', function () {
     return view('welcome');
 });

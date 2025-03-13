@@ -1,67 +1,190 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TomatoPHP Filament POS with Barcode Integration & Offline Capabilities
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![PHP Version](https://img.shields.io/badge/PHP-%3E%3D8.1-blue)](https://www.php.net/)
+[![Laravel Version](https://img.shields.io/badge/Laravel-11.x-red)](https://laravel.com/)
+[![Filament PHP](https://img.shields.io/badge/Filament%20PHP-3.x-green)](https://filamentphp.com/)
+[![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D16-yellow)](https://nodejs.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-%3E%3D5.7-orange)](https://www.mysql.com/)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey)](LICENSE)
 
-## About Laravel
+*A modern, hybrid Point-of-Sale (POS) system built with Laravel, Filament PHP, and TomatoPHP components, featuring barcode scanning, printing capabilities, offline functionality, and robust reporting.*
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Overview
 
-## Learning Laravel
+TomatoPHP Filament POS is a cutting-edge Point-of-Sale (POS) system designed for businesses that require both online and offline functionality. Built on Laravel and Filament PHP, this system integrates advanced features such as real-time barcode scanning, bulk barcode generation, inventory management, and intelligent synchronization for offline operations.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Whether you're running a retail store, restaurant, or any other business requiring a POS system, TomatoPHP Filament POS provides a seamless experience with its modern interface, robust backend, and offline-first architecture.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Key Features
 
-## Laravel Sponsors
+### 🛒 **Enhanced POS Interface**
+- **Real-time Cart Management**
+  - Add products via barcode scanning, manual search, or product grid.
+  - Modify quantities with intuitive +/- buttons.
+  - Apply discounts and VAT calculations dynamically.
+- **Dual-Mode Operation**
+  - **Online Mode**: Real-time cloud sync for seamless transactions.
+  - **Offline Mode**: Local storage with automatic recovery and conflict resolution.
+- **Unified Cart Management** across connectivity states.
+- **Barcode Scanning Integration** powered by QuaggaJS.
+- **Intelligent Totals Calculation**: Subtotal, VAT, and discounts are calculated automatically.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📉 **Inventory Management**
+- **Product CRUD Operations**: Easily manage products with create, read, update, and delete functionality.
+- **Barcode Generation & Printing**: Generate and print barcodes in bulk with customizable templates.
+- **Stock Tracking**: Monitor stock levels and receive alerts for low inventory.
+- **Category Management**: Organize products into categories for better organization.
 
-### Premium Partners
+### 📶 **PWA Offline Sync Architecture**
+```mermaid
+graph TD
+    A[User Creates Order] --> B{Online?}
+    B -->|Yes| C[Immediate Cloud Sync]
+    B -->|No| D[Local Storage]
+    D --> E[Background Queue]
+    E -->|Reconnect| F[Auto-Sync]
+    F --> G[Database Update]
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🖨️ **Barcode System**
+- **Multi-format Support**: Code 128, EAN, UPC.
+- **Thermal Printer Optimized Templates**: Print barcodes directly to thermal printers.
+- **Bulk Generation API Endpoint**: Generate barcodes in bulk programmatically.
 
-## Contributing
+### 🔄 **Offline Synchronization**
+- **Order Queuing with Conflict Resolution**: Automatically resolve conflicts when reconnecting to the server.
+- **Service Worker Caching Strategy**:
+```mermaid
+graph LR
+    SW[Service Worker] -->|Caches| API[POS API]
+    SW -->|Stores| ASSETS[Static Assets]
+    SW -->|Persists| OFFLINE_DATA[IndexedDB]
+    SW -->|Syncs| SYNC_API[Sync Endpoint]
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 📊 **Reporting**
+- **Sales Reports**: Analyze sales performance over time.
+- **Inventory Reports**: Track stock levels and product movement.
+- **Customer Transaction History**: View detailed transaction records for each customer.
 
-## Code of Conduct
+### 🖨️ **Print System**
+- **Bulk Product Barcode Printing**: Print multiple barcodes at once.
+- **Customizable Label Layouts**: Adjust label settings such as:
+  - Labels per row configuration (2-4).
+  - Toggle display of product name, price, or barcode number.
+  - Automatic page numbering.
+- **Print Preview**: Preview your labels before printing.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Technology Stack
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### **Core Components**
+- **Backend**:
+  - `tomataophp/filament-pos` (Base POS System)
+  - `tomataophp/filament-pwa` (Offline Capabilities)
+  - Laravel 11 (API Backend)
+  - Filament PHP 3.x (Admin Interface)
+  - Livewire (Realtime UI)
+  - Eloquent ORM (Database Management)
 
-## License
+- **Frontend**:
+  - QuaggaJS (Barcode Scanning)
+  - Workbox (Service Worker Management)
+  - LocalForage (Offline Storage)
+  - Tailwind CSS (Styling)
+  - Alpine.js (Interactivity)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# filament-pos
+- **Database**:
+  - MySQL 5.7+ or MariaDB 10.3+
+
+- **Other Tools**:
+  - Picqer PHP Barcode Generator (Barcode Generation)
+  - WebPack (Asset Bundling)
+
+---
+
+## Installation
+
+### **Requirements**
+- PHP 8.1+ with PDO SQLite
+- Composer 2.5+
+- Node.js 16+ with WebPack
+- MySQL 5.7+ or MariaDB 10.3+
+- Webcam (for barcode scanning)
+
+### **Setup Process**
+1. **Clone Repository**:
+   ```bash
+   git clone https://gitlab.objects.ws/laravel/engy-pos.git
+   cd engy-pos
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   composer install --optimize-autoloader
+   npm install && npm run dev
+   ```
+
+3. **Configure Environment**:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Enable PWA Features in `.env`**:
+   ```env
+   FILAMENT_PWA_ENABLED=true
+   OFFLINE_STORAGE_DRIVER=indexeddb
+   SYNC_RETRY_LIMIT=5
+   ```
+
+5. **Database Setup**:
+   ```bash
+   php artisan migrate --seed
+   ```
+
+6. **Start Development Server**:
+   ```bash
+   php artisan serve
+   ```
+
+---
+
+## Usage
+
+### **Offline Mode Operation**
+1. **Initial Setup**:
+   - The system auto-caches required assets on the first load.
+   - Service worker registration is verified in the browser console.
+
+2. **Creating Offline Orders**:
+   - Add products normally via barcode scanning, manual search, or product grid.
+   - The cart persists through page reloads.
+   - Checkout creates a local transaction record.
+
+3. **Reconnection Workflow**:
+   - Automatic sync occurs upon network detection.
+   - Manual sync can be triggered via the admin dashboard.
+   - Conflict resolution logs are maintained for reference.
+
+### **Barcode Management**
+| Action | Online Mode | Offline Mode |
+|--------|-------------|--------------|
+| Scan | Immediate validation | Local cache check |
+| Print | Cloud template fetch | Cached templates |
+| Generate | API request | Queue for later processing |
+
+---
+
+## Documentation
+
+- [Filament PWA Guide](https://tomatophp.com/en/open-source/filament-pwa)
+- [Barcode Reference](https://github.com/ericblade/quagga2)
+- [Filament POS Guide](https://tomatophp.com/en/open-source/filament-pos)
+
