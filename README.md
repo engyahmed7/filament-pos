@@ -121,8 +121,8 @@ graph LR
 ### **Setup Process**
 1. **Clone Repository**:
    ```bash
-   git clone https://gitlab.objects.ws/laravel/engy-pos.git
-   cd engy-pos
+   git clone https://github.com/engyahmed7/filament-pos.git
+   cd filament-pos
    ```
 
 2. **Install Dependencies**:
